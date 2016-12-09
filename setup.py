@@ -5,10 +5,10 @@ from setuptools import setup
 
 setup(
     name="syslog-rfc5424-formatter",
-    version="1.0.0",
-    author="EasyPost",
+    version="1.1.0",
+    author="EasyPost + Issuu",
     author_email="oss@easypost.com",
-    url="https://github.com/easypost/syslog-rfc5424-formatter",
+    url="https://github.com/issuu/syslog-rfc5424-formatter",
     license="ISC",
     py_modules=['syslog_rfc5424_formatter'],
     keywords=["logging"],
