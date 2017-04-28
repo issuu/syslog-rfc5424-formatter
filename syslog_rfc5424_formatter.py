@@ -62,7 +62,14 @@ class RFC5424Formatter(logging.Formatter, object):
 
     def format(self, record):
         try:
-            record.__dict__['hostname'] = self.extra.get('hostname',socket.gethostname())
+            if 'hostname' in self.extra:
+                _h = self.extra['hostname']
+                if _h.startswith('+'):
+                    record.__dict__['hostname'] = _h[1:] + "." + socket.gethostname()
+                else:
+                    record.__dict__['hostname'] = _h
+            else:
+                record.__dict__['hostname'] = socket.gethostname()
         except Exception:
             record.__dict__['hostname'] = '-'
         isotime = datetime.datetime.fromtimestamp(record.created).isoformat()
