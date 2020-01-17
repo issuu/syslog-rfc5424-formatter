@@ -4,7 +4,7 @@ import socket
 import datetime
 import re
 
-version_info = (1, 1, 3)
+version_info = (1, 1, 4)
 __version__ = '.'.join(str(s) for s in version_info)
 __author__ = 'EasyPost <oss@easypost.com>'
 
@@ -97,4 +97,7 @@ class RFC5424Formatter(logging.Formatter, object):
         header = '1 {isotime} {hostname} {appname} {process} - - '.format(
             **record.__dict__
         )
-        return header + super(RFC5424Formatter, self).format(record)
+        logline = header + super(RFC5424Formatter, self).format(record)
+        #if len(logline) > 1400:
+        #    logline = logline[:1400]+' ...'
+        return logline
