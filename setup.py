@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name="issuu-syslog-rfc5424-formatter",
-    version="1.1.1",
+    version="1.1.3",
     author="EasyPost + Issuu",
     author_email="oss@easypost.com",
     url="https://github.com/issuu/syslog-rfc5424-formatter",

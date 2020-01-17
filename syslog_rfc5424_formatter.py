@@ -4,7 +4,7 @@ import socket
 import datetime
 import re
 
-version_info = (1, 0, 0)
+version_info = (1, 1, 3)
 __version__ = '.'.join(str(s) for s in version_info)
 __author__ = 'EasyPost <oss@easypost.com>'
 
@@ -58,6 +58,9 @@ class RFC5424Formatter(logging.Formatter, object):
         if 'hostname' in kwargs:
             self.extra['hostname'] = kwargs['hostname']
             del kwargs['hostname']
+        if 'appname' in kwargs:
+            self.extra['appname'] = kwargs['appname']
+            del kwargs['appname']
         return super(RFC5424Formatter, self).__init__(*args, **kwargs)
 
     def format(self, record):
@@ -72,6 +75,12 @@ class RFC5424Formatter(logging.Formatter, object):
                 record.__dict__['hostname'] = socket.gethostname()
         except Exception:
             record.__dict__['hostname'] = '-'
+        try:
+            if 'appname' in self.extra:
+                record.__dict__['appname'] = self.extra['appname']
+        except Exception:
+            record.__dict__['appname'] = record.__dict__['name']
+
         isotime = datetime.datetime.fromtimestamp(record.created).isoformat()
         tz = self._tz_fix.match(time.strftime('%z'))
         if time.timezone and tz:
@@ -85,7 +94,7 @@ class RFC5424Formatter(logging.Formatter, object):
 
         record.__dict__['isotime'] = isotime
 
-        header = '1 {isotime} {hostname} {name} {process} - - '.format(
+        header = '1 {isotime} {hostname} {appname} {process} - - '.format(
             **record.__dict__
         )
         return header + super(RFC5424Formatter, self).format(record)
